@@ -1,6 +1,6 @@
 FROM archlinux/base
 CMD ["supervisord", "-c", "/etc/supervisor.conf"]
-COPY ./supervisor.conf /etc/supervisor.conf
+COPY ./supervisor-source.conf /etc/supervisor.conf
 VOLUME /opt/hydrus/db
 LABEL git="https://github.com/hydrusnetwork/hydrus"
 ENV XVFBRES=1680x1050x16
