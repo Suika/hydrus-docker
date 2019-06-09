@@ -1,8 +1,9 @@
 FROM ubuntu:bionic
 CMD ["supervisord", "-c", "/etc/supervisor.conf"]
 COPY ./supervisor.conf /etc/supervisor.conf
-ENV DEBIAN_FRONTEND=noninteractive
-VOLUME /opt/hydrus/db XVFBRES=1680x1050x16
+ENV DEBIAN_FRONTEND=noninteractive XVFBRES=1680x1050x16
+LABEL git="https://github.com/hydrusnetwork/hydrus"
+VOLUME /opt/hydrus/db
 
 RUN echo "Europe/Dublin" > /etc/timezone && apt-get update && apt-get install -y curl xvfb libxcb1 libgdk-pixbuf2.0-0 x11vnc supervisor fvwm ffmpeg fonts-takao-mincho fonts-takao ttf-ancient-fonts && apt-get clean autoclean && apt-get autoremove --yes && rm -rf /var/lib/{apt,dpkg,cache,log}/
 
