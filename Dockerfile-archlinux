@@ -1,0 +1,9 @@
+FROM archlinux/base
+CMD ["supervisord", "-c", "/etc/supervisor.conf"]
+COPY ./supervisor.conf /etc/supervisor.conf
+VOLUME /opt/hydrus/db
+ENV XVFBRES=1680x1050x16
+
+RUN pacman --noconfirm -Syu && pacman --noconfirm -Sy gtkglext hdf5 opencv python python-beautifulsoup4 python-html5lib python-numpy python-pillow python-psutil python-pysocks python-requests python-send2trash python-twisted python-yaml python-lz4>=0.10.1 ffmpeg python-matplotlib xorg-server-xvfb fvwm x11vnc python-lxml otf-ipafont python-wxpython supervisor && rm -rf /var/cache/pacman/pkg
+
+RUN curl -s -L https://github.com/hydrusnetwork/hydrus/archive/master.tar.gz | tar xzf - --strip-components=1 -C /opt/hydrus
