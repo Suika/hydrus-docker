@@ -1,7 +1,22 @@
 FROM legsplits/hydrus-base:archlinux-base
-CMD ["supervisord", "-c", "/etc/supervisor.conf"]
-COPY ./supervisor-source.conf /etc/supervisor.conf
-VOLUME /opt/hydrus/db
+
+ARG UID
+ARG GID
+
+ENTRYPOINT ["/bin/sh", "/entrypoint.sh"]
 LABEL git="https://github.com/hydrusnetwork/hydrus"
-ENV XVFBRES=1680x1050x16
-RUN curl -s -L https://github.com/hydrusnetwork/hydrus/archive/master.tar.gz | tar xzf - --strip-components=1 -C /opt/hydrus
+ENV XVFBRES=1680x1050x16 UID=${UID:-1000} GID=${GID:-1000}
+
+COPY ./archlinux/entrypoint.sh /entrypoint.sh
+COPY ./supervisor-source.conf /etc/supervisor.conf
+
+ADD https://api.github.com/repos/hydrusnetwork/hydrus/git/refs/heads/master /version.json
+
+RUN set -xe \
+    && mkdir /opt/hydrus \
+    && groupadd -g 1000 hydrus \
+    && useradd -d /opt/hydrus -M -g hydrus hydrus \
+    && curl -s -L https://github.com/hydrusnetwork/hydrus/archive/master.tar.gz | tar xzf - --strip-components=1 -C /opt/hydrus \
+    && chown hydrus:hydrus -R /opt/hydrus
+
+VOLUME /opt/hydrus/db
