@@ -10,8 +10,7 @@ groupmod -g $GROUP_ID hydrus
 
 
 if [ $USER_ID !=  0 ] && [ $GROUP_ID != 0 ]; then
-  find /opt/hydrus/ -not -path /opt/hydrus/db -exec chown hydrus "{}" \;
-  chown hydrus:hydrus /opt/hydrus/db
+  find /opt/hydrus/ -not -path "/opt/hydrus/db/*" -exec chown hydrus:hydrus "{}" \;
 fi
 
 supervisord -c /etc/supervisor.conf
