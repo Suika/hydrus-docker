@@ -8,5 +8,5 @@ RUN pacman --noconfirm -Syu && \
   python-twisted python-yaml python-lz4>=0.10.1 \
   ffmpeg python-matplotlib xorg-server-xvfb fvwm \
   x11vnc python-lxml otf-ipafont python-wxpython \
-  supervisor noto-fonts-emoji && \
+  supervisor noto-fonts-emoji grep && \
   rm -rf /var/cache/pacman/pkg
