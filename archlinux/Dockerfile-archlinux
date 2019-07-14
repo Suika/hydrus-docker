@@ -3,7 +3,7 @@ FROM legsplits/hydrus-base:archlinux-base
 ARG UID
 ARG GID
 
-HEALTHCHECK --interval=20s --timeout=10s --retries=15 CMD ! supervisorctl status | grep -v RUNNING
+HEALTHCHECK --interval=20s --timeout=10s --retries=3 --start-period=30s CMD ! supervisorctl status | grep -v RUNNING
 ENTRYPOINT ["/bin/sh", "/entrypoint.sh"]
 LABEL git="https://github.com/hydrusnetwork/hydrus"
 ENV XVFBRES=1680x1050x16 UID=${UID:-1000} GID=${GID:-1000}
