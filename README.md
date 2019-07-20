@@ -1,18 +1,22 @@
-A simple container that runs hydrusnetwork, uses xvfb, vnc and a bit of fvwm + IPFS
+# Hydrus + Docker + xvfb
+Because the client _needs_ a UI.
 
-The container can be run with `docker run --name hydrusclient -p 5900:5900 `, it will create a volume and then start hydrus.
-Use some VNC Viewer/Client and connect to the docker host IP and Port **5900**.
+Latest hydrus client that runs in docker 24/7. Employs xvfb and vnc.
 
-You can use this vnc viewer for example https://bintray.com/tigervnc/stable/download_file?file_path=vncviewer-1.9.0.exe
+Run `docker run --name hydrusclient -d -p 5900:5900 legsplits/hydrus:latest` to start your instance on your system.
+To connect to the container, use [Tiger VNC Viewer](https://bintray.com/tigervnc/stable/download_file?file_path=vncviewer-1.9.0.exe) or any other VNC client and connect on port **5900**.
 
-If you have existing hydrus installation, bind the db folder to `/opt/hydrus/db`. Check permissions. Default: 1000:1000
+For persisten storage you can either create a named volume or mount a new/existing db path `-v /hydrus/client/db:/opt/hydrus/db`.
+The client runs with default permissions of `1000:1000`, this can be changed by the ENV `UID` and `GID`.
 
-**CHOWN YOUR DB FOLDER**, the container won't do it for you.
+#### The container will **NOT** fix the permissions inside the db folder. **CHOWN YOUR DB FOLDER CONTENT ON YOUR OWN**
 
-Can be changed using the `UID/GID ` environment variables. See compose.
+If you have enough RAM, mount `/tmp` as tmpfs. If not, download more RAM.
 
-If you have enough RAM, mount /tmp as tmpfs. If not, download more RAM.
+As of `v359` hydrus understands IPFS `nocopy`. And can be easely run with go-ipfs container.
+Read [Hydrus IPFS help](https://hydrusnetwork.github.io/hydrus/help/ipfs.html). Mount `HOST_PATH_DB/client_files` to `/data/client_files` in ipfs. Go manage the ipfs service and set the path to `/data/client_files`, you'll know where to put it in.
 
+**OR**, here is the compose file:
 ```
 version: '2'
 services:
@@ -26,9 +30,9 @@ services:
     volumes:
       - HOST_PATH_DB:/opt/hydrus/db
     tmpfs:
-      - /tmp #optional for SPEED and less access to disk
+      - /tmp #optional for SPEEEEEEEEEEEEEEEEEEEEEEEEED and less disk access
     ports:
-      - 5900:5900 #VNC
+      - 5900:5900   #VNC
       - 45868:45868 #Booru
       - 45869:45869 #API
   hydrusclient-ipfs:
@@ -43,4 +47,23 @@ services:
       - 5001:5001 # THE
       - 8080:8080 # IPFS
       - 8081:8081 # DOCS
+```
+
+
+## Building
+First build the base image
+```
+# For Arch (source)
+docker build -t legsplits/hydrus-base:archlinux-base -f archlinux/Dockerfile-archlinux-base .
+# For Ubuntu (hydrus release)
+docker build -t legsplits/hydrus-base:archlinux-base -f ubuntu/Dockerfile-ubuntu-base .
+```
+then the actual client.
+```
+# Arch (source)
+docker build -t hub.suika.lan/hydrus:latest -f archlinux/Dockerfile-archlinux .
+# Ubuntu (hydrus client release)
+docker build -t hub.suika.lan/hydrus:latest -f ubuntu/Dockerfile-ubuntu-release .
+# Ubuntu (hydrus server release)
+docker build -t hub.suika.lan/hydrus:latest -f ubuntu/Dockerfile-server-release .
 ```
