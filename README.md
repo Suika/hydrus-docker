@@ -1,5 +1,6 @@
 # Hydrus + Docker + xvfb
-Because the client _needs_ a UI.
+Do you like big images? Do you like them 2 big. Rejoice!
+Because the client _needs_ a UI. And every packagemanager is trash.
 
 Latest hydrus client that runs in docker 24/7. Employs xvfb and vnc.
 
@@ -61,9 +62,9 @@ docker build -t legsplits/hydrus-base:archlinux-base -f ubuntu/Dockerfile-ubuntu
 then the actual client.
 ```
 # Arch (source)
-docker build -t hub.suika.lan/hydrus:latest -f archlinux/Dockerfile-archlinux .
+docker build -t legsplits/hydrus:latest -f archlinux/Dockerfile-archlinux .
 # Ubuntu (hydrus client release)
-docker build -t hub.suika.lan/hydrus:latest -f ubuntu/Dockerfile-ubuntu-release .
+docker build -t legsplits/hydrus:latest -f ubuntu/Dockerfile-ubuntu-release .
 # Ubuntu (hydrus server release)
-docker build -t hub.suika.lan/hydrus:latest -f ubuntu/Dockerfile-server-release .
+docker build -t legsplits/hydrus:latest -f ubuntu/Dockerfile-server-release .
 ```
