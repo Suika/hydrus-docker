@@ -1,5 +1,5 @@
 # Hydrus + Docker + xvfb
-Do you like big images? Do you like them 2 big. Rejoice!
+Do you like big images? Do you like them 2 big. Rejoice! \
 Because the client _needs_ a UI. And every packagemanager is trash.
 
 Latest hydrus client that runs in docker 24/7. Employs xvfb and vnc.
