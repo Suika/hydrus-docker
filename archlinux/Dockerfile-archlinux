@@ -10,6 +10,7 @@ ENV XVFBRES=1680x1050x16 UID=${UID:-1000} GID=${GID:-1000}
 
 COPY ./archlinux/entrypoint.sh /entrypoint.sh
 COPY ./supervisor-source.conf /etc/supervisor.conf
+COPY ./patch.patch /patch.patch
 
 ADD https://api.github.com/repos/hydrusnetwork/hydrus/git/refs/heads/master /version.json
 

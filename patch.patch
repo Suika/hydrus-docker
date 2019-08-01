@@ -1,0 +1,55 @@
+diff --git a/include/ClientGUIScrolledPanelsManagement.py b/include/ClientGUIScrolledPanelsManagement.py
+index 61c2a11..0dba25a 100644
+--- a/include/ClientGUIScrolledPanelsManagement.py
++++ b/include/ClientGUIScrolledPanelsManagement.py
+@@ -1668,11 +1668,11 @@ class ManageOptionsPanel( ClientGUIScrolledPanels.ManagePanel ):
+             
+             self._verify_regular_https = wx.CheckBox( general )
+             
+-            self._network_timeout = wx.SpinCtrl( general, min = 3, max = 300 )
++            self._network_timeout = wx.SpinCtrl( general, min = 1)
+             self._network_timeout.SetToolTip( 'If a network connection cannot be made in this duration or, if once started, it experiences uninterrupted inactivity for six times this duration, it will be abandoned.' )
+             
+-            self._max_network_jobs = wx.SpinCtrl( general, min = 1, max = 30 )
+-            self._max_network_jobs_per_domain = wx.SpinCtrl( general, min = 1, max = 5 )
++            self._max_network_jobs = wx.SpinCtrl( general, min = 1)
++            self._max_network_jobs_per_domain = wx.SpinCtrl( general, min = 1)
+             
+             #
+             
+@@ -1810,9 +1810,9 @@ class ManageOptionsPanel( ClientGUIScrolledPanels.ManagePanel ):
+             self._show_new_on_file_seed_short_summary = wx.CheckBox( misc )
+             self._show_deleted_on_file_seed_short_summary = wx.CheckBox( misc )
+             
+-            self._subscription_network_error_delay = ClientGUITime.TimeDeltaButton( misc, min = 600, days = True, hours = True, minutes = True )
+-            self._subscription_other_error_delay = ClientGUITime.TimeDeltaButton( misc, min = 600, days = True, hours = True, minutes = True )
+-            self._downloader_network_error_delay = ClientGUITime.TimeDeltaButton( misc, min = 600, days = True, hours = True, minutes = True )
++            self._subscription_network_error_delay = ClientGUITime.TimeDeltaButton( misc, min = 0, days = True, hours = True, minutes = True, seconds = True )
++            self._subscription_other_error_delay = ClientGUITime.TimeDeltaButton( misc, min = 0, days = True, hours = True, minutes = True , seconds = True )
++            self._downloader_network_error_delay = ClientGUITime.TimeDeltaButton( misc, min = 0, days = True, hours = True, minutes = True , seconds = True )
+             
+             #
+             
+diff --git a/include/ClientGUITime.py b/include/ClientGUITime.py
+index ed9a07f..2e8ff15 100644
+--- a/include/ClientGUITime.py
++++ b/include/ClientGUITime.py
+@@ -52,15 +52,15 @@ class EditCheckerOptions( ClientGUIScrolledPanels.EditPanel ):
+         
+         self._intended_files_per_check = wx.SpinCtrl( self._reactive_check_panel, min = 1, max = 1000 )
+         
+-        self._never_faster_than = TimeDeltaCtrl( self._reactive_check_panel, min = 30, days = True, hours = True, minutes = True, seconds = True )
++        self._never_faster_than = TimeDeltaCtrl( self._reactive_check_panel, min = 1, days = True, hours = True, minutes = True, seconds = True )
+         
+-        self._never_slower_than = TimeDeltaCtrl( self._reactive_check_panel, min = 600, days = True, hours = True, minutes = True )
++        self._never_slower_than = TimeDeltaCtrl( self._reactive_check_panel, min = 1, days = True, hours = True, minutes = True, seconds = True )
+         
+         #
+         
+         self._static_check_panel = ClientGUICommon.StaticBox( self, 'static checking' )
+         
+-        self._flat_check_period = TimeDeltaCtrl( self._static_check_panel, min = 180, days = True, hours = True, minutes = True )
++        self._flat_check_period = TimeDeltaCtrl( self._static_check_panel, min = 1, days = True, hours = True, minutes = True, seconds = True )
+         
+         #
+         
