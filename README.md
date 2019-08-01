@@ -48,6 +48,12 @@ services:
       - 5001:5001 # THE
       - 8080:8080 # IPFS
       - 8081:8081 # DOCS
+  hydrus-web:
+    image: legsplits/hydrus-web:latest
+    container_name: hydrus-web
+    restart: always
+    ports:
+      - 8080:80 # READ
 ```
 
 
