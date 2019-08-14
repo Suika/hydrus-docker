@@ -11,7 +11,7 @@ groupmod -g $GROUP_ID hydrus
 echo "Patching Hydrus"
 
 pushd /opt/hydrus/
-patch -p1 < /patch.patch
+patch -f -p1 < /patch.patch
 popd
 
 if [ $USER_ID !=  0 ] && [ $GROUP_ID != 0 ]; then
