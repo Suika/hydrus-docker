@@ -4,7 +4,7 @@ Because the client _needs_ a UI. And every packagemanager is trash.
 
 Latest hydrus client that runs in docker 24/7. Employs xvfb and vnc.
 
-Run `docker run --name hydrusclient -d -p 5900:5900 legsplits/hydrus:latest` to start your instance on your system.
+Run `docker run --name hydrusclient -d -p 5900:5900 suika/hydrus:latest` to start your instance on your system.
 To connect to the container, use [Tiger VNC Viewer](https://bintray.com/tigervnc/stable/download_file?file_path=vncviewer-1.9.0.exe) or any other VNC client and connect on port **5900**.
 
 For persisten storage you can either create a named volume or mount a new/existing db path `-v /hydrus/client/db:/opt/hydrus/db`.
@@ -22,7 +22,7 @@ Read [Hydrus IPFS help](https://hydrusnetwork.github.io/hydrus/help/ipfs.html). 
 version: '2'
 services:
   hydrusclient:
-    image: legsplits/hydrus:latest-arch
+    image: suika/hydrus:latest-arch
     container_name: hydrusclient
     restart: unless-stopped
     environment:
@@ -49,7 +49,7 @@ services:
       - 8080:8080 # IPFS
       - 8081:8081 # DOCS
   hydrus-web:
-    image: legsplits/hydrus-web:latest
+    image: suika/hydrus-web:latest
     container_name: hydrus-web
     restart: always
     ports:
@@ -61,16 +61,16 @@ services:
 First build the base image
 ```
 # For Arch (source)
-docker build -t legsplits/hydrus-base:archlinux-base -f archlinux/Dockerfile-archlinux-base .
+docker build -t suika/hydrus-base:archlinux-base -f archlinux/Dockerfile-archlinux-base .
 # For Ubuntu (hydrus release)
-docker build -t legsplits/hydrus-base:archlinux-base -f ubuntu/Dockerfile-ubuntu-base .
+docker build -t suika/hydrus-base:archlinux-base -f ubuntu/Dockerfile-ubuntu-base .
 ```
 then the actual client.
 ```
 # Arch (source)
-docker build -t legsplits/hydrus:latest -f archlinux/Dockerfile-archlinux .
+docker build -t suika/hydrus:latest -f archlinux/Dockerfile-archlinux .
 # Ubuntu (hydrus client release)
-docker build -t legsplits/hydrus:latest -f ubuntu/Dockerfile-ubuntu-release .
+docker build -t suika/hydrus:latest -f ubuntu/Dockerfile-ubuntu-release .
 # Ubuntu (hydrus server release)
-docker build -t legsplits/hydrus:latest -f ubuntu/Dockerfile-server-release .
+docker build -t suika/hydrus:latest -f ubuntu/Dockerfile-server-release .
 ```
