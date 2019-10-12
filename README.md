@@ -1,4 +1,6 @@
 # Hydrus + Docker + xvfb
+![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/suika/hydrus) ![Docker Cloud Automated build](https://img.shields.io/docker/cloud/automated/suika/hydrus)
+
 Do you like big images? Do you like them 2 big. Rejoice! \
 Because the client _needs_ a UI. And every packagemanager is trash.
 
