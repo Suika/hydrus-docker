@@ -12,6 +12,11 @@ RUN apk --no-cache add fvwm x11vnc xvfb supervisor py3-beautifulsoup4 py3-psutil
  && apk add --no-cache -X http://dl-cdn.alpinelinux.org/alpine/edge/community font-noto-cjk
 RUN pip install qtpy Send2Trash html5lib twisted
 
+RUN set -xe \
+    && mkdir -p /opt/hydrus \
+    && addgroup -g 1000 hydrus \
+    && adduser -h /opt/hydrus -u 1000 -H -S -G hydrus hydrus
+
 RUN mkdir -p /opt/noVNC/utils/websockify \
  && wget https://github.com/novnc/noVNC/archive/master.tar.gz -qO- | tar xzf - --strip-components=1 -C /opt/noVNC \
  && wget https://github.com/novnc/websockify/archive/master.tar.gz -qO- | tar xzf - --strip-components=1 -C /opt/noVNC/utils/websockify \
@@ -20,9 +25,6 @@ RUN mkdir -p /opt/noVNC/utils/websockify \
 
 ADD https://api.github.com/repos/hydrusnetwork/hydrus/git/refs/heads/master /version.json
 RUN set -xe \
-    && mkdir -p /opt/hydrus \
-    && addgroup -g 1000 hydrus \
-    && adduser -h /opt/hydrus -u 1000 -H -S -G hydrus hydrus \
     && wget https://github.com/hydrusnetwork/hydrus/archive/master.tar.gz -qO- | tar xzf - --strip-components=1 -C /opt/hydrus \
     && chown hydrus:hydrus -R /opt/hydrus
 
@@ -40,4 +42,3 @@ ENV QT_SCALE_FACTOR=1.1 \
     UID=${UID:-1000} \
     GID=${GID:-1000}
 EXPOSE 5800 5900
-
