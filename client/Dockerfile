@@ -12,6 +12,12 @@ RUN apk --no-cache add fvwm x11vnc xvfb supervisor py3-beautifulsoup4 py3-psutil
  && apk add --no-cache -X http://dl-cdn.alpinelinux.org/alpine/edge/community font-noto-cjk
 RUN pip install qtpy Send2Trash html5lib twisted
 
+RUN mkdir -p /opt/noVNC/utils/websockify \
+ && wget https://github.com/novnc/noVNC/archive/master.tar.gz -qO- | tar xzf - --strip-components=1 -C /opt/noVNC \
+ && wget https://github.com/novnc/websockify/archive/master.tar.gz -qO- | tar xzf - --strip-components=1 -C /opt/noVNC/utils/websockify \
+ && sed -i -- "s/ps -p/ps -o pid | grep/g" /opt/noVNC/utils/launch.sh \
+ && chown hydrus:hydrus -R /opt/noVNC
+
 ADD https://api.github.com/repos/hydrusnetwork/hydrus/git/refs/heads/master /version.json
 RUN set -xe \
     && mkdir -p /opt/hydrus \
@@ -20,16 +26,11 @@ RUN set -xe \
     && wget https://github.com/hydrusnetwork/hydrus/archive/master.tar.gz -qO- | tar xzf - --strip-components=1 -C /opt/hydrus \
     && chown hydrus:hydrus -R /opt/hydrus
 
-RUN mkdir -p /opt/noVNC/utils/websockify \
- && wget https://github.com/novnc/noVNC/archive/master.tar.gz -qO- | tar xzf - --strip-components=1 -C /opt/noVNC \
- && wget https://github.com/novnc/websockify/archive/master.tar.gz -qO- | tar xzf - --strip-components=1 -C /opt/noVNC/utils/websockify \
- && sed -i -- "s/ps -p/ps -o pid | grep/g" /opt/noVNC/utils/launch.sh \
- && cp /opt/noVNC/vnc.html /opt/noVNC/index.html \
- && chown hydrus:hydrus -R /opt/noVNC
-
 COPY ./entrypoint.sh /entrypoint.sh
 COPY ./supervisord.conf /etc/supervisord.conf
 COPY ./patch.patch /patch.patch
+COPY --chown=hydrus ./novnc/index.html /opt/noVNC/index.html
+COPY --chown=hydrus ./novnc/icon.png /opt/noVNC/app/images/icons/icon.png
 
 ENV QT_SCALE_FACTOR=1.1 \
     VNC_PORT=5900 \
@@ -39,3 +40,4 @@ ENV QT_SCALE_FACTOR=1.1 \
     UID=${UID:-1000} \
     GID=${GID:-1000}
 EXPOSE 5800 5900
+
