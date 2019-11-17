@@ -1,9 +1,0 @@
-FROM ubuntu:bionic
-ENV DEBIAN_FRONTEND=noninteractive
-RUN echo "Europe/Dublin" > /etc/timezone && \
-  apt-get update && \
-  apt-get install -y curl xvfb libxcb1 libgdk-pixbuf2.0-0 x11vnc fvwm \
-  supervisor ffmpeg fonts-takao-mincho fonts-takao ttf-ancient-fonts && \
-  apt-get clean autoclean && \
-  apt-get autoremove --yes && \
-  rm -rf /var/lib/{apt,dpkg,cache,log}/
