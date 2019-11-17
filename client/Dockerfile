@@ -34,6 +34,8 @@ COPY ./patch.patch /patch.patch
 COPY --chown=hydrus ./novnc/index.html /opt/noVNC/index.html
 COPY --chown=hydrus ./novnc/icon.png /opt/noVNC/app/images/icons/icon.png
 
+VOLUME /opt/hydrus/db
+
 ENV QT_SCALE_FACTOR=1.1 \
     VNC_PORT=5900 \
     NOVNC_PORT=5800 \
