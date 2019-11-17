@@ -1,30 +1,27 @@
-# Hydrus + Docker + xvfb
+# Hydrus on docker
 ![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/suika/hydrus) ![Docker Cloud Automated build](https://img.shields.io/docker/cloud/automated/suika/hydrus)
 
-Do you like big images? Do you like them 2 big. Rejoice! \
-Because the client _needs_ a UI. And every packagemanager is trash.
+Latest hydrus client that runs in docker 24/7. Employs xvfb and vnc. Runs on alpine.
 
-Latest hydrus client that runs in docker 24/7. Employs xvfb and vnc.
-
-Run `docker run --name hydrusclient -d -p 5900:5900 suika/hydrus:latest` to start your instance on your system.
-To connect to the container, use [Tiger VNC Viewer](https://bintray.com/tigervnc/stable/download_file?file_path=vncviewer-1.9.0.exe) or any other VNC client and connect on port **5900**.
+Start container: `docker run --name hydrusclient -d -p 5800:5800 -p 5900:5900 suika/hydrus:latest`.
+Connect to noVNC via `http://yourdockerhost:5800/vnc.html` or use [Tiger VNC Viewer](https://bintray.com/tigervnc/stable/download_file?file_path=vncviewer-1.9.0.exe) or any other VNC client and connect on port **5900**.
 
 For persisten storage you can either create a named volume or mount a new/existing db path `-v /hydrus/client/db:/opt/hydrus/db`.
-The client runs with default permissions of `1000:1000`, this can be changed by the ENV `UID` and `GID`.
+The client runs with default permissions of `1000:1000`, this can be changed by the ENV `UID` and `GID`(not working atm, fixed to 1000).
 
 #### The container will **NOT** fix the permissions inside the db folder. **CHOWN YOUR DB FOLDER CONTENT ON YOUR OWN**
 
 If you have enough RAM, mount `/tmp` as tmpfs. If not, download more RAM.
 
-As of `v359` hydrus understands IPFS `nocopy`. And can be easely run with go-ipfs container.
+As of `v359` hydrus understands IPFS `nocopy`. And can be easily run with go-ipfs container.
 Read [Hydrus IPFS help](https://hydrusnetwork.github.io/hydrus/help/ipfs.html). Mount `HOST_PATH_DB/client_files` to `/data/client_files` in ipfs. Go manage the ipfs service and set the path to `/data/client_files`, you'll know where to put it in.
 
-**OR**, here is the compose file:
+**OR**, the compose file:
 ```
 version: '2'
 services:
   hydrusclient:
-    image: suika/hydrus:latest-arch
+    image: suika/hydrus:latest
     container_name: hydrusclient
     restart: unless-stopped
     environment:
@@ -35,6 +32,7 @@ services:
     tmpfs:
       - /tmp #optional for SPEEEEEEEEEEEEEEEEEEEEEEEEED and less disk access
     ports:
+      - 5800:5800   #noVNC
       - 5900:5900   #VNC
       - 45868:45868 #Booru
       - 45869:45869 #API
@@ -57,22 +55,11 @@ services:
     ports:
       - 8080:80 # READ
 ```
-
+also see [Hyve](https://github.com/mserajnik/hyve/) for a feature rich image viewing experience.
 
 ## Building
-First build the base image
 ```
-# For Arch (source)
-docker build -t suika/hydrus-base:archlinux-base -f archlinux/Dockerfile-archlinux-base .
-# For Ubuntu (hydrus release)
-docker build -t suika/hydrus-base:archlinux-base -f ubuntu/Dockerfile-ubuntu-base .
-```
-then the actual client.
-```
-# Arch (source)
-docker build -t suika/hydrus:latest -f archlinux/Dockerfile-archlinux .
-# Ubuntu (hydrus client release)
-docker build -t suika/hydrus:latest -f ubuntu/Dockerfile-ubuntu-release .
-# Ubuntu (hydrus server release)
-docker build -t suika/hydrus:latest -f ubuntu/Dockerfile-server-release .
+# Alpine (client)
+cd client/
+docker build -t suika/hydrus:latest .
 ```
