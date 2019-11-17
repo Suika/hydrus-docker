@@ -26,8 +26,8 @@ RUN mkdir -p /opt/noVNC/utils/websockify \
  && sed -i -- "s/ps -p/ps -o pid | grep/g" /opt/noVNC/utils/launch.sh \
  && chown hydrus:hydrus -R /opt/noVNC
 
-COPY ./client/entrypoint.sh /entrypoint.sh
-COPY ./supervisor-source.conf /etc/supervisord.conf
+COPY ./entrypoint.sh /entrypoint.sh
+COPY ./supervisord.conf /etc/supervisord.conf
 COPY ./patch.patch /patch.patch
 
 ENV QT_SCALE_FACTOR=1.1 \
