@@ -14,4 +14,4 @@ patch -f -p1 -i /patch.patch
 #  find /opt/hydrus/ -not -path "/opt/hydrus/db/*" -exec chown hydrus:hydrus "{}" \;
 #fi
 
-supervisord -c /etc/supervisor.conf
+supervisord -c /etc/supervisord.conf

@@ -10,7 +10,7 @@ LABEL git="https://github.com/hydrusnetwork/hydrus"
 RUN apk --no-cache add fvwm x11vnc xvfb supervisor py3-beautifulsoup4 py3-psutil py3-pysocks py3-requests py3-twisted py3-yaml qt5-qtcharts py3-lz4 ffmpeg  py3-pillow py3-numpy py3-numpy py3-qt5 \
  && apk add --no-cache -X http://dl-cdn.alpinelinux.org/alpine/edge/testing font-noto font-noto-emoji \
  && apk add --no-cache -X http://dl-cdn.alpinelinux.org/alpine/edge/community font-noto-cjk
-RUN pip install qtpy Send2Trash html5lib
+RUN pip install qtpy Send2Trash html5lib twisted
 
 ADD https://api.github.com/repos/hydrusnetwork/hydrus/git/refs/heads/master /version.json
 RUN set -xe \
@@ -27,7 +27,7 @@ RUN mkdir -p /opt/noVNC/utils/websockify \
  && chown hydrus:hydrus -R /opt/noVNC
 
 COPY ./client/entrypoint.sh /entrypoint.sh
-COPY ./supervisor-source.conf /etc/supervisor.conf
+COPY ./supervisor-source.conf /etc/supervisord.conf
 COPY ./patch.patch /patch.patch
 
 ENV QT_SCALE_FACTOR=1.1 \
