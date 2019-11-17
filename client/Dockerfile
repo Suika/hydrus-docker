@@ -25,7 +25,7 @@ RUN mkdir -p /opt/noVNC/utils/websockify \
  && wget https://github.com/novnc/websockify/archive/master.tar.gz -qO- | tar xzf - --strip-components=1 -C /opt/noVNC/utils/websockify \
  && sed "s/let autoconnect = WebUtil.getConfigVar('autoconnect', false);/let autoconnect = 'true';/" /opt/noVNC/app/ui.js \
  && sed -i -- "s/ps -p/ps -o pid | grep/g" /opt/noVNC/utils/launch.sh \
- && mv /opt/noVNC/vnc.html /opt/noVNC/index.html \
+ && cp /opt/noVNC/vnc.html /opt/noVNC/index.html \
  && chown hydrus:hydrus -R /opt/noVNC
 
 COPY ./entrypoint.sh /entrypoint.sh
