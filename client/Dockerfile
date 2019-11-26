@@ -1,4 +1,4 @@
-FROM czentye/opencv-video-minimal
+FROM czentye/opencv-video-minimal:v4.1.1
 
 ARG UID
 ARG GID
