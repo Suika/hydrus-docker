@@ -1,4 +1,4 @@
-FROM czentye/opencv-video-minimal:v4.1.1
+FROM suika/opencv-video-minimal:4.2-py3.7.5
 
 ARG UID
 ARG GID
@@ -30,7 +30,6 @@ RUN set -xe \
 
 COPY ./entrypoint.sh /entrypoint.sh
 COPY ./supervisord.conf /etc/supervisord.conf
-COPY ./patch.patch /patch.patch
 COPY --chown=hydrus ./novnc/index.html /opt/noVNC/index.html
 COPY --chown=hydrus ./novnc/icon.png /opt/noVNC/app/images/icons/icon.png
 
@@ -42,5 +41,6 @@ ENV QT_SCALE_FACTOR=1.1 \
     SUPERVISOR_PORT=9001 \
     XVFBRES=1680x1050x24 \
     UID=${UID:-1000} \
-    GID=${GID:-1000}
+    GID=${GID:-1000} \
+    DB_DIR=/opt/hydrus/db
 EXPOSE 5800 5900
