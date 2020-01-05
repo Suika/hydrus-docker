@@ -25,14 +25,18 @@ jobs:
         name: Docker login
         run: |
           docker login -u "${DOCKER_REGISTRY_USERNAME}" -p "${DOCKER_REGISTRY_PASSWORD}"
+          docker login -u "${DOCKER_REGISTRY_USERNAME}" -p "${GHPCKG_REGISTRY_PASSWORD}" docker.pkg.github.com
         env:
           DOCKER_REGISTRY_USERNAME: ${{ secrets.REGISTRY_USERNAME }}
           DOCKER_REGISTRY_PASSWORD: ${{ secrets.REGISTRY_PASSWORD }}
+          GHPCKG_REGISTRY_PASSWORD: ${{ secrets.GH_REGISTRY_PASSWORD }}
       -
         name: Run Buildx
         run: |
           docker buildx build \
             --platform linux/amd64,linux/arm64,linux/ppc64le,linux/s390x,linux/386,linux/arm/v7,linux/arm/v6 \
+            --cache-from docker.pkg.github.com/suika/hydrus-docker/hydrus:client-cache \
+            --cache-to docker.pkg.github.com/suika/hydrus-docker/hydrus:client-cache \
             --output "type=image,push=true" \
             --tag suika/hydrus:latest \
             --file ./client/Dockerfile ./client
@@ -40,6 +44,9 @@ jobs:
         name: Docker logout
         run: |
           docker logout
+          docker logout --username "${DOCKER_REGISTRY_USERNAME}" docker.pkg.github.com
+        env:
+          DOCKER_REGISTRY_USERNAME: ${{ secrets.REGISTRY_USERNAME }}
   build-server:
     runs-on: [ubuntu-latest]
     steps:
@@ -59,14 +66,18 @@ jobs:
         name: Docker login
         run: |
           docker login -u "${DOCKER_REGISTRY_USERNAME}" -p "${DOCKER_REGISTRY_PASSWORD}"
+          docker login -u "${DOCKER_REGISTRY_USERNAME}" -p "${GHPCKG_REGISTRY_PASSWORD}" docker.pkg.github.com
         env:
           DOCKER_REGISTRY_USERNAME: ${{ secrets.REGISTRY_USERNAME }}
           DOCKER_REGISTRY_PASSWORD: ${{ secrets.REGISTRY_PASSWORD }}
+          GHPCKG_REGISTRY_PASSWORD: ${{ secrets.GH_REGISTRY_PASSWORD }}
       -
         name: Run Buildx
         run: |
           docker buildx build \
             --platform linux/amd64,linux/arm64,linux/ppc64le,linux/s390x,linux/386,linux/arm/v7,linux/arm/v6 \
+            --cache-from docker.pkg.github.com/suika/hydrus-docker/hydrus:server-cache \
+            --cache-to docker.pkg.github.com/suika/hydrus-docker/hydrus:server-cache \
             --output "type=image,push=true" \
             --tag suika/hydrus:server \
             --file ./server/Dockerfile ./server
@@ -74,3 +85,6 @@ jobs:
         name: Docker logout
         run: |
           docker logout
+          docker logout --username "${DOCKER_REGISTRY_USERNAME}" docker.pkg.github.com
+        env:
+          DOCKER_REGISTRY_USERNAME: ${{ secrets.REGISTRY_USERNAME }}
