@@ -1,4 +1,4 @@
-FROM czentye/opencv-video-minimal
+FROM suika/opencv-video-minimal:4.2-py3.7.5
 
 ARG UID
 ARG GID
@@ -30,4 +30,3 @@ VOLUME /opt/hydrus/db
 ENV UID=${UID:-1000} \
     GID=${GID:-1000}
 EXPOSE 45870
-
