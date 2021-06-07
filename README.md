@@ -1,3 +1,7 @@
+# The files and build have moved to main repo, see https://github.com/hydrusnetwork/hydrus/tree/master/static/build_files/docker
+# This repo should not be used, at least use the configuration from the main repo
+
+
 # Hydrus on docker
 ![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/suika/hydrus) ![Docker Cloud Automated build](https://img.shields.io/docker/cloud/automated/suika/hydrus)
 
